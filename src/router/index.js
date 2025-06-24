@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"; 
+import kiemTraAdmin from "./kiemTraAdmin";
 
 const routes = [
     {
@@ -24,6 +25,12 @@ const routes = [
     {
         path: '/admin/hoa-don',
         component: () => import('../components/Admin/HoaDon/index.vue'),
+    },
+
+    {
+        path: '/admin/dang-nhap',
+        component: () => import('../components/Admin/DangNhap/index.vue'),
+        meta: { layout: 'blank' },
     },
 
     {

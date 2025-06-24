@@ -74,25 +74,88 @@
                     <a href="#" class="dropdown-item text-center">See all notifications</a>
                 </div>
             </div>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                    <span class="d-none d-lg-inline-flex">John Doe</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                    <a href="#" class="dropdown-item">My Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="#" class="dropdown-item">Log Out</a>
+            <template v-if="auth == true">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-2" v-bind:src="anh_nv" alt=""
+                            style="width: 40px; height: 40px;">
+                        <span class="d-none d-lg-inline-flex">{{ name_nv }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <button v-on:click="dangXuat()" href="#" class="dropdown-item">Log Out</button>
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-2" src="../../assets/img/noneuser.webp" alt=""
+                            style="width: 40px; height: 40px;">
+                        <span class="d-none d-lg-inline-flex">Admin</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a :href="`/admin/dang-nhap`" class="dropdown-item">Đăng Nhập</a>
+                    </div>
+                </div>
+            </template>
         </div>
     </nav>
     <!-- Navbar End -->
 </template>
 <script>
+import axios from 'axios'
 
 export default {
+    data() {
+        return {
+            auth: false,
+            name_nv: '',
+            anh_nv: ''
+        }
+    },
+    mounted() {
+        this.anh_nv = localStorage.getItem('ten_anh')
+        this.name_nv = localStorage.getItem('ten_nv');
+        console.log(localStorage.getItem("token_nhan_vien"))
+        this.checkLogin();
+    },
+    methods: {
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
+                    }
+                })
+        },
 
+        dangXuat() {
+            axios
+                .post('http://127.0.0.1:8000/api/nhan-vien/dang-xuat', {}, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.success(thong_bao);
+                        this.$router.push('/khach-hang/trang-chu')
+                        window.location.reload();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+    },
 }
 
 </script>
