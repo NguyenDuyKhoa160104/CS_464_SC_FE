@@ -8,15 +8,16 @@
             <template v-if="auth">
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" v-bind:src="anh_nv" alt=""
-                            style="width: 40px; height: 40px;">
-                        <div
+                        <img class="rounded-circle" v-bind:src="anh_nv" alt="" style="width: 40px; height: 40px;">
+                        <div v-if="list_login.tinh_trang == 1"
                             class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                         </div>
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">{{ name_nv }}</h6>
-                        <span>Admin</span>
+                        <span v-if="quyen_nv == 1">Quản Lý</span>
+                        <span v-else-if="quyen_nv == 0">Phu Nhân Quản Lý</span>
+                        <span v-else>Nhân Viên</span>
                     </div>
                 </div>
             </template>
@@ -25,9 +26,6 @@
                     <div class="position-relative">
                         <img class="rounded-circle" src="../../assets/img/noneuser.webp" alt=""
                             style="width: 40px; height: 40px;">
-                        <div
-                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
-                        </div>
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">User</h6>
@@ -71,16 +69,33 @@ export default {
         return {
             auth: false,
             name_nv: '',
-            anh_nv: ''
+            anh_nv: '',
+            quyen_nv: 0,
+            list_login: [],
         }
     },
     mounted() {
         this.anh_nv = localStorage.getItem('ten_anh')
-        this.name_nv = localStorage.getItem('ten_nv');
+        this.name_nv = localStorage.getItem('ten_nv')
+        this.quyen_nv = localStorage.getItem('quyen')
         console.log(localStorage.getItem("token_nhan_vien"))
-        this.checkLogin();
+        this.checkLogin()
+        this.layDataDanhLogin()
     },
     methods: {
+        layDataDanhLogin() {
+            axios
+                .get("http://127.0.0.1:8000/api/nhan-vien/data-dang-nhap", {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    this.list_login = res.data.data;
+                    this.auth = res.data.status;
+                })
+        },
+
         checkLogin() {
             axios
                 .get('http://127.0.0.1:8000/api/kiem-tra-admin', {

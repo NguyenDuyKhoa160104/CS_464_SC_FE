@@ -8,6 +8,11 @@ const routes = [
     },
 
     {
+        path: '/admin/profile',
+        component: () => import('../components/Admin/Profile/index.vue'),
+    },
+
+    {
         path: '/admin/san-pham',
         component: () => import('../components/Admin/SanPham/index.vue'),
     },

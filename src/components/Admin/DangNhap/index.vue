@@ -56,8 +56,9 @@ export default {
                         // Lưu lại ở trình duyệt
                         localStorage.setItem('token_nhan_vien', res.data.token_nhan_vien);
                         localStorage.setItem('ten_nv', res.data.ten_nv)
-                        localStorage.setItem('ten_anh', res.data.anh_nv )
-                        this.$router.push('/admin/trang-chu');
+                        localStorage.setItem('ten_anh', res.data.anh_nv)
+                        localStorage.setItem('quyen', res.data.quyen_nv )
+                        this.$router.push('/admin/profile');
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
