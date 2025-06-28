@@ -25,14 +25,14 @@
                                 </thead>
                                 <tbody>
                                     <tr class="align-middle">
-                                        <th scope="row">1</th>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>jhon@email.com</td>
-                                        <td>USA</td>
-                                        <td>Doe</td>
-                                        <td>jhon@email.com</td>
-                                        <td>USA</td>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
                                             <button type="button" class="btn btn-outline-success">Hoạt Động</button>
                                         </td>

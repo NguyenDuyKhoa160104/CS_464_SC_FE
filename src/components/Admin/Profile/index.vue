@@ -21,16 +21,7 @@
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-body">
-                                <template v-if="auth">
-                                    <div class="d-flex flex-column align-items-center text-center">
-                                        <img v-bind:src="list_login.hinh_anh" alt="Admin"
-                                            class="rounded-circle p-1 bg-primary" width="110">
-                                        <div class="mt-3">
-                                            <h4> {{ list_login.ten_nhan_vien }} </h4>
-                                        </div>
-                                    </div>
-                                </template>
-                                <template v-else>
+                                <template v-if="!list_login.hinh_anh || list_login.hinh_anh == null">
                                     <div class="d-flex flex-column align-items-center text-center">
                                         <img src="/src/assets/img/noneuser.webp" alt="Admin"
                                             class="rounded-circle p-1 bg-primary" width="110">
@@ -39,6 +30,16 @@
                                         </div>
                                     </div>
                                 </template>
+                                <template v-else="auth">
+                                    <div class="d-flex flex-column align-items-center text-center">
+                                        <img v-bind:src="list_login.hinh_anh" alt="Admin"
+                                            class="rounded-circle p-1 bg-primary" width="110">
+                                        <div class="mt-3">
+                                            <h4> {{ list_login.ten_nhan_vien }} </h4>
+                                        </div>
+                                    </div>
+                                </template>
+                                
                                 <hr class="my-4">
                                 <ul class="list-group list-group-flush">
                                     <li
@@ -132,8 +133,8 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <label><label>{{ list_login.so_dien_thoai ?
-                                                formatPhone_0xxx(list_login.so_dien_thoai) : ''
-                                                }}</label></label>
+                                            formatPhone_0xxx(list_login.so_dien_thoai) : ''
+                                        }}</label></label>
                                     </div>
                                 </div>
                                 <div class="row">

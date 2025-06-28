@@ -1,12 +1,12 @@
 <template>
-    <div v-if="list_login.id_quyen == 1" class="container">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h4>Danh Sách Sản Phẩm</h4>
-                        <button class="btn btn-primary rounded-pill"
-                            data-bs-toggle="modal" data-bs-target="#themModal">Thêm Mới Nhân Viên</button>
+                        <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#themModal">Thêm Mới Nhân Viên</button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -39,11 +39,19 @@
                                             </td>
                                             <td>
                                                 <div v-if="value.id_quyen != 1">
-                                                    <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
-                                                    type="button" class="btn btn-success rounded-pill">Hoạt
-                                                    Động</button>
-                                                <button v-on:click="changeTrangThai(value)" v-else type="button"
-                                                    class="btn btn-secondary rounded-pill">Tạm Khóa</button>
+                                                    <button v-on:click="changeTrangThai(value)"
+                                                        v-if="value.tinh_trang == 1" type="button"
+                                                        class="btn btn-success rounded-pill">Hoạt
+                                                        Động</button>
+                                                    <button v-on:click="changeTrangThai(value)" v-else type="button"
+                                                        class="btn btn-secondary rounded-pill">Tạm Khóa</button>
+                                                </div>
+                                                <div v-else>
+                                                    <button v-if="value.tinh_trang == 1" type="button"
+                                                        class="btn btn-success rounded-pill">Hoạt
+                                                        Động</button>
+                                                    <button v-else type="button"
+                                                        class="btn btn-secondary rounded-pill">Tạm Khóa</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -138,8 +146,13 @@ export default {
             axios
                 .get("http://127.0.0.1:8000/api/nhan-vien/data")
                 .then((res) => {
-                    this.list_nhan_vien = res.data.data;
-                })
+                    // Sắp xếp danh sách theo quyen tăng dần
+                    this.list_nhan_vien = res.data.data.sort((a, b) => {
+                        if (a.id_quyen < b.id_quyen) return -1;
+                        if (a.id_quyen > b.id_quyen) return 1;
+                        return 0;
+                    });
+                });
         },
 
         layDataDanhLogin() {
