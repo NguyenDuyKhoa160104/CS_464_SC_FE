@@ -23,6 +23,11 @@ const routes = [
     },
 
     {
+        path: '/admin/khach-hang',
+        component: () => import('../components/Admin/KhachHang/index.vue'),
+    },
+
+    {
         path: '/admin/dich-vu',
         component: () => import('../components/Admin/DichVu/index.vue'),
     },

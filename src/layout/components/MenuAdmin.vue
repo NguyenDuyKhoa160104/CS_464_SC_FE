@@ -2,13 +2,14 @@
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
-            <a href="/nhan-vien/trang-chu" class="navbar-brand mx-4 mb-3">
+            <a href="/admin/profile" class="navbar-brand mx-4 mb-3">
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>DASHMIN</h3>
             </a>
             <template v-if="auth">
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" v-bind:src="anh_nv" alt="" style="width: 40px; height: 40px;">
+                        <a href="/admin/profile"><img class="rounded-circle" v-bind:src="anh_nv" alt=""
+                                style="width: 40px; height: 40px;"></a>
                         <div v-if="list_login.tinh_trang == 1"
                             class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                         </div>
@@ -24,8 +25,8 @@
             <template v-else>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="../../assets/img/noneuser.webp" alt=""
-                            style="width: 40px; height: 40px;">
+                        <a href="/admin/profile"><img class="rounded-circle" src="../../assets/img/noneuser.webp"
+                                alt="" style="width: 40px; height: 40px;"></a>
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0">User</h6>

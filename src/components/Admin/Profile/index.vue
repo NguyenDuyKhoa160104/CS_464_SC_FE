@@ -36,10 +36,15 @@
                                             class="rounded-circle p-1 bg-primary" width="110">
                                         <div class="mt-3">
                                             <h4> {{ list_login.ten_nhan_vien }} </h4>
+                                            <label for="upload-image" class="btn btn-primary rounded-pill">
+                                                Chọn ảnh
+                                            </label>
+                                            <input type="file" id="upload-image" accept="image/*"
+                                                style="display: none" />
                                         </div>
                                     </div>
                                 </template>
-                                
+
                                 <hr class="my-4">
                                 <ul class="list-group list-group-flush">
                                     <li
@@ -134,7 +139,7 @@
                                     <div class="col-sm-9 text-secondary">
                                         <label><label>{{ list_login.so_dien_thoai ?
                                             formatPhone_0xxx(list_login.so_dien_thoai) : ''
-                                        }}</label></label>
+                                                }}</label></label>
                                     </div>
                                 </div>
                                 <div class="row">

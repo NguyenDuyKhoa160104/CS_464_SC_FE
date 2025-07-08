@@ -68,7 +68,7 @@
                 <div class="modal-body">
                     <div class="mb-2">
                         <label>Tên Danh Mục</label>
-                        <input v-model="create_danh_muc.ten_danh_muc" v-on:change="taoSlugDM()"
+                        <input v-model="create_danh_muc.ten_danh_muc" v-on:change="taoSlugDM()" 
                             class="form-control rounded-pill" type="text">
                     </div>
                     <div class="mb-2">

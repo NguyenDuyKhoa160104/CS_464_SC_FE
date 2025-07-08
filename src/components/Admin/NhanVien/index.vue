@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4>Danh Sách Sản Phẩm</h4>
+                        <h4>Danh Sách Nhân Viên</h4>
                         <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
                             data-bs-target="#themModal">Thêm Mới Nhân Viên</button>
                     </div>
