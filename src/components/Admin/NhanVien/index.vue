@@ -1,64 +1,61 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h4>Danh Sách Nhân Viên</h4>
-                        <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#themModal">Thêm Mới Nhân Viên</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Danh Sách Nhân Viên</h4>
+                    <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#themModal">Thêm
+                        Mới Nhân Viên</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr class="align-middle text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Quyền</th>
+                                    <th scope="col">Họ Và Tên</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Số Điện Thoại</th>
+                                    <th scope="col">Hình Ảnh</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="(value, index) in list_nhan_vien" :key="index">
                                     <tr class="align-middle text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Quyền</th>
-                                        <th scope="col">Họ Và Tên</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Số Điện Thoại</th>
-                                        <th scope="col">Hình Ảnh</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="row">{{ index + 1 }}</th>
+                                        <td v-if="value.id_quyen == 1">Quản lý</td>
+                                        <td v-else>Nhân Viên</td>
+                                        <td>{{ value.ten_nhan_vien }}</td>
+                                        <td>{{ value.email }}</td>
+                                        <td>{{ value.so_dien_thoai }}</td>
+                                        <td>
+                                            <img v-if="value.hinh_anh == ''" src="/src/assets/img/noneuser.webp"
+                                                alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+                                            <img v-else v-bind:src="value.hinh_anh" alt="Admin"
+                                                class="rounded-circle p-1 bg-primary" width="110">
+                                        </td>
+                                        <td>
+                                            <div v-if="value.id_quyen != 1">
+                                                <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
+                                                    type="button" class="btn btn-success rounded-pill">Hoạt
+                                                    Động</button>
+                                                <button v-on:click="changeTrangThai(value)" v-else type="button"
+                                                    class="btn btn-secondary rounded-pill">Tạm Khóa</button>
+                                            </div>
+                                            <div v-else>
+                                                <button v-if="value.tinh_trang == 1" type="button"
+                                                    class="btn btn-success rounded-pill">Hoạt
+                                                    Động</button>
+                                                <button v-else type="button" class="btn btn-secondary rounded-pill">Tạm
+                                                    Khóa</button>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for="(value, index) in list_nhan_vien" :key="index">
-                                        <tr class="align-middle text-center">
-                                            <th scope="row">{{ index + 1 }}</th>
-                                            <td v-if="value.id_quyen == 1">Quản lý</td>
-                                            <td v-else>Nhân Viên</td>
-                                            <td>{{ value.ten_nhan_vien }}</td>
-                                            <td>{{ value.email }}</td>
-                                            <td>{{ value.so_dien_thoai }}</td>
-                                            <td>
-                                                <img v-if="value.hinh_anh == ''" src="/src/assets/img/noneuser.webp"
-                                                    alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
-                                                <img v-else v-bind:src="value.hinh_anh" alt="Admin"
-                                                    class="rounded-circle p-1 bg-primary" width="110">
-                                            </td>
-                                            <td>
-                                                <div v-if="value.id_quyen != 1">
-                                                    <button v-on:click="changeTrangThai(value)"
-                                                        v-if="value.tinh_trang == 1" type="button"
-                                                        class="btn btn-success rounded-pill">Hoạt
-                                                        Động</button>
-                                                    <button v-on:click="changeTrangThai(value)" v-else type="button"
-                                                        class="btn btn-secondary rounded-pill">Tạm Khóa</button>
-                                                </div>
-                                                <div v-else>
-                                                    <button v-if="value.tinh_trang == 1" type="button"
-                                                        class="btn btn-success rounded-pill">Hoạt
-                                                        Động</button>
-                                                    <button v-else type="button"
-                                                        class="btn btn-secondary rounded-pill">Tạm Khóa</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

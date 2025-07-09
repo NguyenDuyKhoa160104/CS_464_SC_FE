@@ -1,5 +1,4 @@
 <template>
-    <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -51,7 +50,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Modal THÊM-->
     <div class="modal fade" id="themModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

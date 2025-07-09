@@ -1,57 +1,55 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h4>Danh Sách Sản Phẩm</h4>
-                        <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#themModal">Thêm Mới Dịch Vụ</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Danh Sách Sản Phẩm</h4>
+                    <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#themModal">Thêm
+                        Mới Dịch Vụ</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr class="align-middle text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên Dịch Vụ</th>
+                                    <th scope="col">Danh Mục</th>
+                                    <th scope="col">Mô Tả Dịch Vụ</th>
+                                    <th scope="col">Giá Dịch Vụ</th>
+                                    <th scope="col">Thời Lượng</th>
+                                    <th scope="col">Hình Ảnh</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="(value, index) in list_dich_vu" :key="index">
                                     <tr class="align-middle text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Tên Dịch Vụ</th>
-                                        <th scope="col">Danh Mục</th>
-                                        <th scope="col">Mô Tả Dịch Vụ</th>
-                                        <th scope="col">Giá Dịch Vụ</th>
-                                        <th scope="col">Thời Lượng</th>
-                                        <th scope="col">Hình Ảnh</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="row">{{ index + 1 }}</th>
+                                        <td scope="row">{{ value.ten_dich_vu }}</td>
+                                        <td scope="row">{{ numberToString(value.id_danh_muc) }}</td>
+                                        <td scope="row">{{ value.mo_ta_dich_vu }}</td>
+                                        <td scope="row">{{ formatToVND(value.gia_dich_vu) }}</td>
+                                        <td scope="row">{{ formatMinutesToTime(value.thoi_luong) }}</td>
+                                        <td scope="row">
+                                            <img style="width: 200px;" v-bind:src="value.hinh_anh">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-success rounded-pill">Hoạt
+                                                Động</button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning rounded-pill me-2">Cập
+                                                Nhật</button>
+                                            <button v-on:click="del_dich_vu = value" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#xoaModal"
+                                                class="btn btn-danger rounded-pill">Xóa</button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for="(value, index) in list_dich_vu" :key="index">
-                                        <tr class="align-middle text-center">
-                                            <th scope="row">{{ index + 1 }}</th>
-                                            <td scope="row">{{ value.ten_dich_vu }}</td>
-                                            <td scope="row">{{ numberToString(value.id_danh_muc) }}</td>
-                                            <td scope="row">{{ value.mo_ta_dich_vu }}</td>
-                                            <td scope="row">{{ formatToVND(value.gia_dich_vu) }}</td>
-                                            <td scope="row">{{ formatMinutesToTime(value.thoi_luong) }}</td>
-                                            <td scope="row">
-                                                <img style="width: 200px;" v-bind:src="value.hinh_anh">
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-success rounded-pill">Hoạt
-                                                    Động</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-warning rounded-pill me-2">Cập
-                                                    Nhật</button>
-                                                <button v-on:click="del_dich_vu = value" type="button"
-                                                    data-bs-toggle="modal" data-bs-target="#xoaModal"
-                                                    class="btn btn-danger rounded-pill">Xóa</button>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

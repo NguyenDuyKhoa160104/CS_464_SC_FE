@@ -13,6 +13,12 @@ const routes = [
     },
 
     {
+        path: '/admin/dang-ky',
+        component: () => import('../components/Admin/DangKy/index.vue'),
+        meta: { layout: 'blank' },
+    },
+
+    {
         path: '/admin/san-pham',
         component: () => import('../components/Admin/SanPham/index.vue'),
     },
