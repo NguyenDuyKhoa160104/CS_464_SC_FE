@@ -139,7 +139,8 @@ export default {
     data() {
         return {
             list_danh_muc: [],
-            create_danh_muc: {},
+            create_danh_muc: {
+            },
             del_danh_muc: {},
             edit_danh_muc: {},
             list_login: []

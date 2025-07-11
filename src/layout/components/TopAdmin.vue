@@ -49,11 +49,13 @@ export default {
         return {
             auth: false,
             name_nv: '',
-            anh_nv: ''
+            anh_nv: '',
+            quyen: '',
+            list_login: [],
         }
     },
     mounted() {
-        this.anh_nv = localStorage.getItem('ten_anh')
+        this.anh_nv = localStorage.getItem('ten_anh');
         this.name_nv = localStorage.getItem('ten_nv');
         console.log(localStorage.getItem("token_nhan_vien"))
         this.checkLogin();

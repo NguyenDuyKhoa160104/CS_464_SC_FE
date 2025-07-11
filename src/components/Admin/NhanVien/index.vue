@@ -115,10 +115,10 @@ export default {
             list_login: {},
             list_nhan_vien: [],
             create_nhan_vien: {},
+            auth: false,
         }
     },
     mounted() {
-        this.layDataDanhLogin()
         this.layDataNhanVien()
     },
     methods: {
@@ -150,19 +150,6 @@ export default {
                         return 0;
                     });
                 });
-        },
-
-        layDataDanhLogin() {
-            axios
-                .get("http://127.0.0.1:8000/api/nhan-vien/data-dang-nhap", {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
-                    }
-                })
-                .then((res) => {
-                    this.list_login = res.data.data;
-                    this.auth = res.data.status;
-                })
         },
 
         themMoiNhanVien() {

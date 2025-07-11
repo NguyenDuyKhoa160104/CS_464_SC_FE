@@ -29,12 +29,15 @@
                             <td>{{ value.so_dien_thoai }}</td>
                             <td>{{ formatToVND(value.tong_tien) }}</td>
                             <td>
-                                <button v-if="value.tinh_trang == 1" class="btn btn-success">Kích hoạt</button>
-                                <button v-else class="btn btn-secondary">Tạm khóa</button>
+                                <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
+                                    class="btn btn-success rounded-pill">Hoạt
+                                    động</button>
+                                <button v-on:click="changeTrangThai(value)" v-else
+                                    class="btn btn-secondary rounded-pill">Tạm khóa</button>
                             </td>
                             <td>
-                                <button v-on:click="thong_tin = value" class="btn btn-info" data-bs-toggle="modal"
-                                    data-bs-target="#modalChiTietHoaDon">Chi
+                                <button v-on:click="thong_tin = value" class="btn btn-info rounded-pill"
+                                    data-bs-toggle="modal" data-bs-target="#modalChiTietHoaDon">Chi
                                     Tiết</button>
                             </td>
                         </tr>
@@ -185,7 +188,7 @@
                     <h4 class="text-end"><b>{{ formatToVND(Number(thong_tin.tong_tien)) }}</b></h4>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -237,6 +240,22 @@ export default {
                     if (res.data.status) {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
+                        this.layDataHoaDon();
+                    } else {
+                        var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
+                        this.$toast.error(thong_bao);
+                    }
+                })
+        },
+        changeTrangThai(value) {
+            axios
+                .post("http://127.0.0.1:8000/api/nhan-vien/hoa-don/doi-tinh-trang", value, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
                         this.layDataHoaDon();
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
