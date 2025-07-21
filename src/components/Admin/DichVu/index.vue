@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div v-if="auth == true" class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
@@ -132,13 +132,29 @@ export default {
             list_dich_vu: [],
             del_dich_vu: {},
             create_dich_vu: {},
+            auth: false,
         };
     },
     mounted() {
         this.layDataDichVu();
         this.layDataDanhMucOpen();
+        this.checkLogin()
     },
     methods: {
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
+                    }
+                })
+        },
+
         layDataDanhMucOpen() {
             axios
                 .get("http://127.0.0.1:8000/api/nhan-vien/danh-muc/data-open")

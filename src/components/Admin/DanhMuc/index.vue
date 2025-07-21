@@ -7,6 +7,7 @@
                         <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill"
                             data-bs-toggle="modal" data-bs-target="#themModal">Thêm
                             Danh Mục</button>
+                        <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -143,7 +144,7 @@ export default {
             },
             del_danh_muc: {},
             edit_danh_muc: {},
-            list_login: []
+            list_login: {}
         }
     },
     mounted() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div v-if="auth == true" class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
@@ -104,8 +104,6 @@
         </div>
     </div>
 </template>
-
-
 <script>
 import axios from 'axios';
 
@@ -120,6 +118,7 @@ export default {
     },
     mounted() {
         this.layDataNhanVien()
+        this.checkLogin()
     },
     methods: {
         changeTrangThai(value) {
@@ -135,6 +134,20 @@ export default {
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
+                    }
+                })
+        },
+
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
                     }
                 })
         },

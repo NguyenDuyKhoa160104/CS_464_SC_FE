@@ -1,75 +1,75 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h4>Danh Sách Sản Phẩm</h4>
-                        <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill"
-                            data-bs-toggle="modal" data-bs-target="#themModal">Thêm Mới Sản Phẩm</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+    <div v-if="auth == true" class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Danh Sách Sản Phẩm</h4>
+                    <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill"
+                        data-bs-toggle="modal" data-bs-target="#themModal">Thêm Mới Sản Phẩm</button>
+                    <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr class="align-middle text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên Sản Phẩm</th>
+                                    <th scope="col">Danh Mục</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Mô Tả</th>
+                                    <th scope="col">Mô Tả Chi Tiêt</th>
+                                    <th scope="col">Hình Ảnh</th>
+                                    <th scope="col">Status</th>
+                                    <th v-if="list_login.tinh_trang == 1" scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="(value, index) in list_san_pham" :key="index">
                                     <tr class="align-middle text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Tên Sản Phẩm</th>
-                                        <th scope="col">Danh Mục</th>
-                                        <th scope="col">Giá</th>
-                                        <th scope="col">Mô Tả</th>
-                                        <th scope="col">Mô Tả Chi Tiêt</th>
-                                        <th scope="col">Hình Ảnh</th>
-                                        <th scope="col">Status</th>
-                                        <th v-if="list_login.tinh_trang == 1" scope="col">Action</th>
+                                        <th scope="row">{{ index + 1 }}</th>
+                                        <td>{{ value.ten_san_pham }}</td>
+                                        <td>{{ numberToString(value.id_danh_muc) }}</td>
+                                        <td>{{ formatToVND(value.gia_san_pham) }}</td>
+                                        <td class="text-wrap">{{ value.mo_ta }}</td>
+                                        <td class="text-wrap">
+                                            <button v-on:click="chi_tiet = value" data-bs-toggle="modal"
+                                                data-bs-target="#chiTietExtraLargeModal"
+                                                class="btn btn-info rounded-pill text-nowrap">Chi
+                                                tiết
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <img style="width: 200px;" v-bind:src="value.hinh_anh" alt="">
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
+                                                type="button" class="btn btn-success rounded-pill">Hoạt
+                                                Động</button>
+                                            <button v-on:click="changeTrangThai(value)" v-else type="button"
+                                                class="btn btn-secondary rounded-pill">Tạm Dừng</button>
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <div v-if="list_login.tinh_trang == 1">
+                                                <button v-on:click="Object.assign(edit_san_pham, value)" type="button"
+                                                    class="btn btn-warning rounded-pill me-2" data-bs-toggle="modal"
+                                                    data-bs-target="#capNhatModal">Cập
+                                                    Nhật</button>
+                                                <button v-on:click="del_san_pham = value" type="button"
+                                                    class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                                                    data-bs-target="#xoaModal">Xóa</button>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for="(value, index) in list_san_pham" :key="index">
-                                        <tr class="align-middle text-center">
-                                            <th scope="row">{{ index + 1 }}</th>
-                                            <td>{{ value.ten_san_pham }}</td>
-                                            <td>{{ numberToString(value.id_danh_muc) }}</td>
-                                            <td>{{ formatToVND(value.gia_san_pham) }}</td>
-                                            <td class="text-wrap">{{ value.mo_ta }}</td>
-                                            <td class="text-wrap">
-                                                <button v-on:click="chi_tiet = value" data-bs-toggle="modal"
-                                                    data-bs-target="#chiTietExtraLargeModal"
-                                                    class="btn btn-info rounded-pill text-nowrap">Chi
-                                                    tiết
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <img style="width: 200px;" v-bind:src="value.hinh_anh" alt="">
-                                            </td>
-                                            <td class="text-nowrap">
-                                                <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
-                                                    type="button" class="btn btn-success rounded-pill">Hoạt
-                                                    Động</button>
-                                                <button v-on:click="changeTrangThai(value)" v-else type="button"
-                                                    class="btn btn-secondary rounded-pill">Tạm Dừng</button>
-                                            </td>
-                                            <td class="text-nowrap">
-                                                <div v-if="list_login.tinh_trang == 1">
-                                                    <button v-on:click="Object.assign(edit_san_pham, value)"
-                                                        type="button" class="btn btn-warning rounded-pill me-2"
-                                                        data-bs-toggle="modal" data-bs-target="#capNhatModal">Cập
-                                                        Nhật</button>
-                                                    <button v-on:click="del_san_pham = value" type="button"
-                                                        class="btn btn-danger rounded-pill" data-bs-toggle="modal"
-                                                        data-bs-target="#xoaModal">Xóa</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Modal THÊM-->
     <div class="modal fade" id="themModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -213,6 +213,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            auth: false,
             list_san_pham: [],
             list_danh_muc_open: [],
             create_san_pham: {},
@@ -226,6 +227,7 @@ export default {
         this.layDataSanPham()
         this.layDataDanhMucOpen()
         this.layDataDanhLogin()
+        this.checkLogin()
     },
     methods: {
         layDataDanhLogin() {
@@ -238,6 +240,20 @@ export default {
                 .then((res) => {
                     this.list_login = res.data.data;
                     this.auth = res.data.status;
+                })
+        },
+
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
+                    }
                 })
         },
 

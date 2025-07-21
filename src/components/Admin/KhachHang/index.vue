@@ -1,55 +1,57 @@
 <template>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <h4>Danh Sách Khách Hàng</h4>
-                        <button class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#themModal">Thêm Mới Nhân Viên</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+    <div v-if="auth == true" class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4>Danh Sách Khách Hàng</h4>
+                    <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill"
+                        data-bs-toggle="modal" data-bs-target="#themModal">Thêm
+                        Mới Nhân Viên</button>
+                    <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr class="align-middle text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên Khách Hàng</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Số Điện Thoại</th>
+                                    <th scope="col">Status</th>
+                                    <th v-if="list_login.tinh_trang == 1" scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template v-for="(value, index) in list_khach_hang" :key="index">
                                     <tr class="align-middle text-center">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Tên Khách Hàng</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Số Điện Thoại</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="row">{{ index + 1 }}</th>
+                                        <td scope="row">{{ value.ten_khach_hang }}</td>
+                                        <td scope="row">{{ value.email }}</td>
+                                        <td scope="row">{{ value.so_dien_thoai }}</td>
+                                        <td scope="row">
+                                            <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
+                                                type="button" class="btn btn-success rounded-pill">Hoạt
+                                                Động</button>
+                                            <button v-on:click="changeTrangThai(value)" v-else type="button"
+                                                class="btn btn-secondary rounded-pill">Tạm
+                                                Khóa</button>
+                                        </td>
+                                        <td v-if="list_login.tinh_trang == 1" scope="row">
+                                            <button v-on:click="Object.assign(edit_khach_hang, value)" type="button"
+                                                class="btn btn-warning rounded-pill me-2" data-bs-toggle="modal"
+                                                data-bs-target="#capNhatModal">Cập
+                                                Nhật</button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for="(value, index) in list_khach_hang" :key="index">
-                                        <tr class="align-middle text-center">
-                                            <th scope="row">{{ index + 1 }}</th>
-                                            <td scope="row">{{ value.ten_khach_hang }}</td>
-                                            <td scope="row">{{ value.email }}</td>
-                                            <td scope="row">{{ value.so_dien_thoai }}</td>
-                                            <td scope="row">
-                                                <button v-on:click="changeTrangThai(value)" v-if="value.tinh_trang == 1"
-                                                    type="button" class="btn btn-success rounded-pill">Hoạt
-                                                    Động</button>
-                                                <button v-on:click="changeTrangThai(value)" v-else type="button"
-                                                    class="btn btn-secondary rounded-pill">Tạm
-                                                    Khóa</button>
-                                            </td>
-                                            <td scope="row">
-                                                <button v-on:click="Object.assign(edit_khach_hang, value)" type="button"
-                                                    class="btn btn-warning rounded-pill me-2" data-bs-toggle="modal"
-                                                    data-bs-target="#capNhatModal">Cập
-                                                    Nhật</button>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- Modal THÊM-->
     <div class="modal fade" id="themModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -121,18 +123,49 @@ export default {
         return {
             list_khach_hang: [],
             create_khach_hang: {},
-            edit_khach_hang: {}
+            edit_khach_hang: {},
+            auth: false,
+            list_login: {},
         }
     },
     mounted() {
         this.layDataKhachHang();
+        this.checkLogin();
+        this.layDataDanhLogin();
     },
     methods: {
+        layDataDanhLogin() {
+            axios
+                .get("http://127.0.0.1:8000/api/nhan-vien/data-dang-nhap", {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    this.list_login = res.data.data;
+                    this.auth = res.data.status;
+                })
+        },
+
         layDataKhachHang() {
             axios
                 .get("http://127.0.0.1:8000/api/nhan-vien/khach-hang/data")
                 .then((res) => {
                     this.list_khach_hang = res.data.data;
+                })
+        },
+
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
+                    }
                 })
         },
 

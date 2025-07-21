@@ -1,11 +1,13 @@
 <template>
     <!-- Danh sách hóa đơn -->
-    <div class="card">
+    <div v-if="auth == true" class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>Danh Sách Hóa Đơn</h4>
-            <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalHoaDon">
+            <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                data-bs-target="#modalHoaDon">
                 Tạo Mới Hóa Đơn
             </button>
+            <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
         </div>
         <div class="card-body table-responsive">
             <table class="table text-center align-middle">
@@ -46,7 +48,6 @@
             </table>
         </div>
     </div>
-
     <!-- Modal tạo mới hóa đơn -->
     <div class="modal fade" id="modalHoaDon" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -199,6 +200,8 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            list_login: {},
+            auth: false,
             thong_tin: [],
             list_hoa_don: [],
             list_san_pham_open: [],
@@ -220,8 +223,22 @@ export default {
     mounted() {
         this.layDataSanPhamOpen();
         this.layDataHoaDon();
+        this.checkLogin();
     },
     methods: {
+        layDataDanhLogin() {
+            axios
+                .get("http://127.0.0.1:8000/api/nhan-vien/data-dang-nhap", {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    this.list_login = res.data.data;
+                    this.auth = res.data.status;
+                })
+        },
+
         layDataHoaDon() {
             axios
                 .get("http://127.0.0.1:8000/api/nhan-vien/hoa-don/data")
@@ -241,12 +258,24 @@ export default {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.success(thong_bao);
                         this.layDataHoaDon();
+                        this.resetForm();
                     } else {
                         var thong_bao = '<b>Thông báo</b><span style="margin-top: 5px">' + res.data.message + '<span>';
                         this.$toast.error(thong_bao);
                     }
                 })
         },
+
+        resetForm() {
+            this.create_hoa_don.ten_khach_hang = '';
+            this.create_hoa_don.so_dien_thoai = '';
+            this.create_hoa_don.chi_tiet = [];
+            this.create_hoa_don.tong_tien = 0;
+
+            this.new_san_pham.id_san_pham = null;
+            this.new_san_pham.so_luong = null;
+        },
+
         changeTrangThai(value) {
             axios
                 .post("http://127.0.0.1:8000/api/nhan-vien/hoa-don/doi-tinh-trang", value, {
@@ -300,7 +329,20 @@ export default {
                 style: 'currency',
                 currency: 'VND'
             });
-        }
+        },
+        checkLogin() {
+            axios
+                .get('http://127.0.0.1:8000/api/kiem-tra-admin', {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        this.auth = true
+                    }
+                })
+        },
     }
 };
 </script>
