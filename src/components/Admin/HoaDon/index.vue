@@ -7,7 +7,6 @@
                 data-bs-target="#modalHoaDon">
                 Tạo Mới Hóa Đơn
             </button>
-            <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
         </div>
         <div class="card-body table-responsive">
             <table class="table text-center align-middle">
@@ -224,6 +223,7 @@ export default {
         this.layDataSanPhamOpen();
         this.layDataHoaDon();
         this.checkLogin();
+        this.layDataDanhLogin()
     },
     methods: {
         layDataDanhLogin() {

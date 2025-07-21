@@ -6,7 +6,7 @@
                     <h4>Danh Sách Sản Phẩm</h4>
                     <button v-if="list_login.tinh_trang == 1" class="btn btn-primary rounded-pill"
                         data-bs-toggle="modal" data-bs-target="#themModal">Thêm Mới Sản Phẩm</button>
-                    <button v-else class="btn btn-warning">Tài khoản đang tạm khóa!</button>
+                    <span v-else class="btn btn-warning">Tài khoản đang tạm khóa!</span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
