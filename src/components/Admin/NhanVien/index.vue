@@ -4,8 +4,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h4>Danh Sách Nhân Viên</h4>
-                    <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#themModal">Thêm
+                    <button v-if="list_login.tinh_trang == true" class="btn btn-primary rounded-pill"
+                        data-bs-toggle="modal" data-bs-target="#themModal">Thêm
                         Mới Nhân Viên</button>
+                    <span v-else class="btn btn-warning">Tài khoản đang tạm khóa!</span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -119,8 +121,22 @@ export default {
     mounted() {
         this.layDataNhanVien()
         this.checkLogin()
+        this.layDataDanhLogin()
     },
     methods: {
+        layDataDanhLogin() {
+            axios
+                .get("http://127.0.0.1:8000/api/nhan-vien/data-dang-nhap", {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem("token_nhan_vien")
+                    }
+                })
+                .then((res) => {
+                    this.list_login = res.data.data;
+                    this.auth = res.data.status;
+                })
+        },
+
         changeTrangThai(value) {
             axios
                 .post("http://127.0.0.1:8000/api/nhan-vien/doi-tinh-trang", value, {

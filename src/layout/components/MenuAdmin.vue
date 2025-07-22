@@ -50,10 +50,10 @@
                 <a :href="`/admin/san-pham`" class="nav-item nav-link active"><i class="fa fa-box me-2"></i>
                     Sản Phẩm</a>
             </div>
-            <div class="navbar-nav w-100">
+            <!-- <div class="navbar-nav w-100">
                 <a :href="`/admin/dich-vu`" class="nav-item nav-link active"><i class="fas fa-concierge-bell"></i>
                     Dịch Vụ</a>
-            </div>
+            </div> -->
             <div class="navbar-nav w-100">
                 <a :href="`/admin/hoa-don`" class="nav-item nav-link active"><i class="fas fa-file-invoice"></i>
                     Hóa Đơn</a>
